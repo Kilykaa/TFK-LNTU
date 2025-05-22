@@ -23,7 +23,7 @@ class Human:
         return [self.name, self.surname]
 
 class Student(Human):
-    def __init__(self, name=None, surname=None, year=None, course=None, mediane_score=0.0, reputation=0): # reputation like China ^^
+    def __init__(self, name=None, surname=None, year=None, course=1, mediane_score=0.0, reputation=0): # reputation like China ^^
         super().__init__(name, surname, year)
         self.course = course
         self.mediane_score = mediane_score
@@ -35,7 +35,7 @@ class Student(Human):
         self.reputation += value * (self.mediane_score / 5)
 
     def check_reputation(self):
-        self._add_reputation(5)
+        self._add_reputation((5*self.course)*2)
         if self.reputation >= 80:
             return "respect"
         elif self.reputation >= 50:
@@ -45,7 +45,8 @@ class Student(Human):
         else:
             return ";-;"
 
-s = Student(name="Daniil", surname="Chvyr", year=2004, mediane_score=4.5)
+s = Student(name="Daniil", surname="Chvyr", year=2004, course=2, mediane_score=4.5)
 print(s.reputation)
 print(s.check_reputation())
 print(s.reputation)
+print(s.check_reputation())
