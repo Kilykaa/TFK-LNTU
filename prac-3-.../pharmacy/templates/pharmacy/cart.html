@@ -1,0 +1,28 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block content %}
+<section class="cart-section">
+    <div class="card">
+        <h2>🛒 Ваш кошик</h2>
+
+        <div class="cart-empty" style="text-align: center; padding: 3rem 0;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+            <h3>Кошик порожній</h3>
+            <p>Додайте товари з каталогу для оформлення замовлення</p>
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'pharmacy:catalog' %}" class="btn btn-primary">Перейти до каталогу</a>
+            </div>
+        </div>
+
+        <div class="cart-items" style="display: none;">
+        </div>
+
+        <div class="cart-total" style="display: none;">
+            <h3>Загальна сума: <span id="total-price">0</span> грн</h3>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                Оформити замовлення
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}

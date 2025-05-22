@@ -1,0 +1,65 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block content %}
+<!-- Product Details -->
+<section class="product-details">
+    <div class="card">
+        <div class="product-info" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+            <div class="product-image-placeholder" style="background: var(--light-color); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                💊
+            </div>
+
+            <div class="product-details-content">
+                <h1 style="color: var(--primary-color); margin-bottom: 1rem;">{{ product.name }}</h1>
+
+                <div class="product-meta" style="margin-bottom: 2rem;">
+                    <p><strong>Категорія:</strong> {{ product.category }}</p>
+                    <p><strong>Виробник:</strong> {{ product.manufacturer }}</p>
+                    <p><strong>Країна:</strong> {{ product.country }}</p>
+                    <p><strong>Дозування:</strong> {{ product.dosage }}</p>
+                    <p><strong>Упаковка:</strong> {{ product.package }}</p>
+                </div>
+
+                <div class="product-description" style="margin-bottom: 2rem;">
+                    <h3>Опис товару</h3>
+                    <p>{{ product.description }}</p>
+                </div>
+
+                <div class="product-price-section" style="margin-bottom: 2rem;">
+                    <p class="product-price" style="font-size: 2rem;">{{ product.price }} грн</p>
+                    <div class="product-status {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}" style="position: static; margin-top: 0.5rem;">
+                        {% if product.in_stock %}✅ В наявності{% else %}❌ Немає в наявності{% endif %}
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    {% if product.in_stock %}
+                    <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;" onclick="buyNow({{ product.id }})">
+                        🛒 Купити зараз
+                    </button>
+                    <button class="btn btn-outline" onclick="addToCart({{ product.id }})">Додати до кошика</button>
+                    {% else %}
+                    <button class="btn" style="background: var(--light-color); color: var(--dark-color);" disabled>
+                        Товар відсутній
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'pharmacy:catalog' %}" class="btn btn-outline">← Повернутися до каталогу</a>
+</div>
+
+<script>
+function buyNow(productId) {
+    alert('Перехід до оформлення замовлення!');
+}
+
+function addToCart(productId) {
+    alert('Товар додано до кошика!');
+}
+</script>
+{% endblock %}

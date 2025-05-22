@@ -1,0 +1,50 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block content %}
+<!-- Categories Filter -->
+<section class="categories-section">
+    <div class="card">
+        <h3>📂 Категорії товарів</h3>
+        <div class="categories-grid" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+            {% for category in categories %}
+            <span class="category-tag" style="background: var(--light-color); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--primary-color);">
+                {{ category }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Products Grid -->
+<section class="products-section">
+    <h2 style="margin-bottom: 2rem;">🛒 Наші товари</h2>
+    <div class="grid">
+        {% for product in products %}
+        <div class="card product-card">
+            <div class="product-status {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                {% if product.in_stock %}В наявності{% else %}Немає в наявності{% endif %}
+            </div>
+
+            <h3>{{ product.name }}</h3>
+            <p><strong>Категорія:</strong> {{ product.category }}</p>
+            <p>{{ product.description }}</p>
+            <p class="product-price">{{ product.price }} грн</p>
+
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn btn-outline">Детальніше</a>
+                {% if product.in_stock %}
+                <button class="btn btn-primary" onclick="addToCart({{ product.id }})">До кошика</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+
+function addToCart(productId) {
+    alert('Товар додано до кошика!');
+}
+</script>
+{% endblock %}

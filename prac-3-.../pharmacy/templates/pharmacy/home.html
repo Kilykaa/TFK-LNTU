@@ -1,0 +1,56 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block content %}
+<!-- Welcome Section -->
+<section class="welcome-section">
+    <div class="card">
+        <h2>🏠 Ласкаво просимо до аптеки "Здоров'я+"!</h2>
+        <p>Ваш надійний партнер у сфері охорони здоров'я. Ми пропонуємо широкий асортимент якісних ліків, професійні консультації та зручні послуги для турботи про ваше здоров'я.</p>
+        <div style="margin-top: 1rem;">
+            <a href="{% url 'pharmacy:catalog' %}" class="btn btn-primary">🛒 Переглянути каталог</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="featured-products">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">💊 Популярні товари</h2>
+    <div class="grid">
+        {% for product in featured_products %}
+        <div class="card product-card">
+            <h3>{{ product.name }}</h3>
+            <p class="product-price">{{ product.price }} грн</p>
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'pharmacy:product_detail' 1 %}" class="btn btn-outline">Детальніше</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">🛎️ Наші послуги</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>🩺 Професійні консультації</h3>
+            <p>Кваліфіковані фармацевти нададуть детальну консультацію щодо застосування препаратів</p>
+        </div>
+
+        <div class="card">
+            <h3>🚚 Швидка доставка</h3>
+            <p>Доставка ліків по місту протягом 2 годин. Безкоштовно при замовленні від 200 грн</p>
+        </div>
+
+        <div class="card">
+            <h3>📊 Вимірювання показників</h3>
+            <p>Безкоштовне вимірювання тиску, цукру в крові та інших важливих показників</p>
+        </div>
+
+        <div class="card">
+            <h3>🕐 Цілодобова підтримка</h3>
+            <p>Екстрена допомога та консультації в будь-який час доби</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
