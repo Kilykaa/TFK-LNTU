@@ -8,7 +8,7 @@ class Daniil:
 
         self.year = year
 
-    def getCourse(self):
+    def get_course(self):
         if self.year is None:
             return None
 
@@ -21,9 +21,9 @@ class Daniil:
         else:
             return 4
 
-    def getList(self):
+    def get_list(self):
         return [self.name, self.surname]
 
 student = Daniil(name='Daniil', surname='Chvyr', year=2007,)
-print(student.getList())
-print(student.getCourse())
+print(student.get_list())
+print(student.get_course())
