@@ -21,7 +21,7 @@
             <h3>{{ product.name }}</h3>
             <p class="product-price">{{ product.price }} грн</p>
             <div style="margin-top: 1rem;">
-                <a href="{% url 'pharmacy:product_detail' 1 %}" class="btn btn-outline">Детальніше</a>
+                <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn btn-outline">Детальніше</a>
             </div>
         </div>
         {% endfor %}
