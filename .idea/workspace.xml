@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6b6fed8-a8c6-4d9f-8c03-b06f1866b311" name="Changes" comment="ADD: 1 practical complete">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prac-3-.../1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prac-3-.../db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +97,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1747945720266</updated>
-      <workItem from="1747945721435" duration="10059000" />
+      <workItem from="1747945721435" duration="11521000" />
     </task>
     <task id="LOCAL-00001" summary="ADD: 1 practical complete">
       <option name="closed" value="true" />

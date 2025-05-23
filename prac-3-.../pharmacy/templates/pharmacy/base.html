@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
 
-    <!-- Bootstrap CSS -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -22,25 +23,43 @@
                     <span class="logo-text">Аптека Blin</span>
                 </div>
 
-                <nav class="main-nav">
-                    <ul class="nav-list">
-                        <li><a href="{% url 'pharmacy:home' %}" class="nav-link">Головна</a></li>
-                        <li><a href="{% url 'pharmacy:catalog' %}" class="nav-link">Каталог</a></li>
-                        <li><a href="{% url 'pharmacy:cart' %}" class="nav-link">Кошик <span class="cart-count">(0)</span></a></li>
-                        <li><a href="{% url 'pharmacy:about' %}" class="nav-link">Про мене</a></li>
-                    </ul>
+                <nav class="navbar navbar-expand-lg">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav nav-list">
+                            <li class="nav-item"><a href="{% url 'pharmacy:home' %}" class="nav-link"><i class="bi bi-house-fill"></i> Головна</a></li>
+                            <li class="nav-item"><a href="{% url 'pharmacy:catalog' %}" class="nav-link"><i class="bi bi-grid-3x3-gap-fill"></i> Каталог</a></li>
+                            <li class="nav-item"><a href="{% url 'pharmacy:cart' %}" class="nav-link"><i class="bi bi-cart-fill"></i> Кошик <span class="cart-count badge bg-danger">(0)</span></a></li>
+                            <li class="nav-item"><a href="{% url 'pharmacy:about' %}" class="nav-link"><i class="bi bi-info-circle-fill"></i> Про нас</a></li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
         <div class="container">
             {% block page_header %}
             <div class="page-header">
                 <h1 class="page-title">{{ page_name }}</h1>
+                {% if page_description %}
+                <p class="lead text-muted">{{ page_description }}</p>
+                {% endif %}
             </div>
             {% endblock %}
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
 
             {% block content %}
             {% endblock %}
@@ -48,37 +67,70 @@
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Контакти</h4>
-                    <p>📍 вул. KrutoBlin, 15, м. ЛуцькBlin</p>
-                    <p>📞 +380 44 123-45-67</p>
-                    <p>✉️ info@daniil-blin.ua</p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Режим роботи блін</h4>
-                    <p>Пн-Пт: 8:00-22:00</p>
-                    <p>Сб-Нд: 9:00-21:00</p>
-                    <p>🚨 Екстрена допомога: цілодобово блін</p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Про нас</h4>
-                    <p>Надійний партнер у сфері охорони здоров'я з 1984 року</p>
-                    <p>Ліцензія МОЗ України № 322222</p>
-                </div>
+    <div class="container">
+        <div class="row footer-content">
+            <div class="col-md-4 footer-section">
+                <h5>Контакти</h5>
+                <p>вул. KrutoBlin, 15, м. ЛуцькBlin</p>
+                <p>+380 44 123-45-67</p>
+                <p>info@daniil-blin.ua</p>
             </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2025 Аптека Blin. Всі права захищені.</p>
+            <div class="col-md-4 footer-section">
+                <h5>Режим роботи</h5>
+                <p>Пн-Пт: 8:00-22:00</p>
+                <p>Сб-Нд: 9:00-21:00</p>
+                <p class="emergency">Екстрена допомога: цілодобово</p>
+            </div>
+
+            <div class="col-md-4 footer-section">
+                <h5>Слідкуйте за нами</h5>
+                <div class="social-links">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-telegram"></i></a>
+                </div>
             </div>
         </div>
-    </footer>
 
-    <!-- Bootstrap JS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Аптека Blin. Турбуємося про ваше здоров'я</p>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        function updateCartCount(count) {
+            const cartCountElement = document.querySelector('.cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = `(${count})`;
+            }
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>

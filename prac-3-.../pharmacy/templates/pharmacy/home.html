@@ -1,56 +1,383 @@
 {% extends 'pharmacy/base.html' %}
 
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="20" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="80" r="1.2" fill="rgba(255,255,255,0.1)"/></svg>');
+        animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        100% { transform: translateY(-20px) rotate(360deg); }
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .stats-counter {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .product-image-placeholder {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .product-image-placeholder:hover {
+        transform: scale(1.05);
+    }
+
+    .testimonial-card {
+        background: #fff;
+        border-left: 4px solid #28a745;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block page_header %}
+<section class="hero-section rounded-3">
+    <div class="container position-relative">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="bi bi-heart-pulse-fill text-warning"></i>
+                    Ласкаво просимо до Аптеки Blin!
+                </h1>
+                <p class="lead mb-4">
+                    Ваш надійний партнер у сфері охорони здоров'я вже 41 рік.
+                    Ми пропонуємо широкий асортимент якісних препаратів,
+                    професійні консультації та зручні послуги для турботи про ваше здоров'я.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'pharmacy:catalog' %}" class="btn btn-light btn-lg">
+                        <i class="bi bi-grid-3x3-gap-fill"></i> Переглянути каталог
+                    </a>
+                    <a href="{% url 'pharmacy:about' %}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-info-circle"></i> Дізнатися більше
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="hero-image">
+                    <i class="bi bi-hospital" style="font-size: 8rem; opacity: 0.8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
-<!-- Welcome Section -->
-<section class="welcome-section">
-    <div class="card">
-        <h2>🏠 Ласкаво просимо до Аптеки Блін!</h2>
-        <p>Ваш надійний партнер у сфері охорони здоров'я. Ми пропонуємо широкий асортимент якісних органів, професійні консультації залежних та зручні послуги для турботи про вашу дозу.</p>
-        <div style="margin-top: 1rem;">
-            <a href="{% url 'pharmacy:catalog' %}" class="btn btn-primary">🛒 Переглянути каталог</a>
+<section class="mb-5">
+    <div class="row text-center">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-calendar-check feature-icon text-primary"></i>
+                    <div class="stats-counter">41</div>
+                    <h5>Років досвіду</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-geo-alt feature-icon text-success"></i>
+                    <div class="stats-counter">5</div>
+                    <h5>Локацій</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-people feature-icon text-warning"></i>
+                    <div class="stats-counter">10K+</div>
+                    <h5>Задоволених клієнтів</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-clock feature-icon text-info"></i>
+                    <div class="stats-counter">24/7</div>
+                    <h5>Підтримка</h5>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Featured Products -->
-<section class="featured-products">
-    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">💊 Популярні товари</h2>
-    <div class="grid">
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">
+            <i class="bi bi-star-fill"></i> Популярні товари
+        </h2>
+        <a href="{% url 'pharmacy:catalog' %}" class="btn btn-outline-primary">
+            Всі товари <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="row">
         {% for product in featured_products %}
-        <div class="card product-card">
-            <h3>{{ product.name }}</h3>
-            <p class="product-price">{{ product.price }} грн</p>
-            <div style="margin-top: 1rem;">
-                <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn btn-outline">Детальніше</a>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0 product-card">
+                <div class="product-image-placeholder">
+                    {% if product.product_type == 'medicine' %}💊
+                    {% elif product.product_type == 'organ' %}🫀
+                    {% elif product.product_type == 'supplement' %}🧪
+                    {% else %}🩺
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <span class="badge bg-success mb-2">{{ product.get_product_type_display }}</span>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-muted">{{ product.description|truncatewords:15 }}</p>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="product-price text-success fw-bold fs-4">{{ product.price }} грн</div>
+                        <div class="rating">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= product.rating %}
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                {% else %}
+                                    <i class="bi bi-star text-muted"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if product.in_stock %}
+                        <span class="badge bg-success mb-2">
+                            <i class="bi bi-check-circle"></i> В наявності
+                        </span>
+                    {% else %}
+                        <span class="badge bg-danger mb-2">
+                            <i class="bi bi-x-circle"></i> Немає в наявності
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn btn-outline-primary">
+                            <i class="bi bi-eye"></i> Детальніше
+                        </a>
+                        {% if product.in_stock %}
+                        <button class="btn btn-success" onclick="addToCart({{ product.id }})">
+                            <i class="bi bi-cart-plus"></i> До кошика
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> Товари ще завантажуються...
             </div>
         </div>
         {% endfor %}
     </div>
 </section>
 
-<!-- Services Section -->
-<section class="services-section">
-    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">🛎️ Наші послуги</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>🩺 Професійні консультації</h3>
-            <p>Кваліфіковані фармацевти нададуть детальну консультацію щодо застосування препаратів</p>
+<section class="mb-5">
+    <h2 class="text-center text-primary mb-4">
+        <i class="bi bi-gear-fill"></i> Наші послуги
+    </h2>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-person-check feature-icon text-primary"></i>
+                    <h5 class="card-title">Професійні консультації</h5>
+                    <p class="card-text">Кваліфіковані фармацевти нададуть детальну консультацію щодо застосування препаратів</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>🚚 Швидка доставка</h3>
-            <p>Доставка ліків по місту протягом 2 годин. Безкоштовно при замовленні від 1200 грн</p>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-truck feature-icon text-success"></i>
+                    <h5 class="card-title">Швидка доставка</h5>
+                    <p class="card-text">Доставка ліків по місту протягом 2 годин. Безкоштовно при замовленні від 1200 грн</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>📊 Вимірювання показників</h3>
-            <p>Безкоштовне вимірювання тиску, речовин в крові та інших важливих показників</p>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-activity feature-icon text-warning"></i>
+                    <h5 class="card-title">Вимірювання показників</h5>
+                    <p class="card-text">Безкоштовне вимірювання тиску, цукру в крові та інших важливих показників</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>🕐 Цілодобова підтримка</h3>
-            <p>Екстрена допомога та консультації в будь-який час доби</p>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-telephone feature-icon text-danger"></i>
+                    <h5 class="card-title">Цілодобова підтримка</h5>
+                    <p class="card-text">Екстрена допомога та консультації в будь-який час доби</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+<section class="mb-5">
+    <h2 class="text-center text-primary mb-4">
+        <i class="bi bi-chat-heart"></i> Що кажуть наші клієнти
+    </h2>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="testimonial-card shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Марія Іванівна</h6>
+                        <small class="text-muted">Постійний клієнт</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Завжди знаходжу потрібні ліки. Персонал дуже уважний та професійний!"</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="testimonial-card shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Олексій Петренко</h6>
+                        <small class="text-muted">Клієнт з 2018 року</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Швидка доставка та якісні препарати. Рекомендую всім!"</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="testimonial-card shadow-sm">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-fill text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Анна Сидорова</h6>
+                        <small class="text-muted">Мама двох дітей</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Зручно робити замовлення онлайн. Ціни приємно здивували!"</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-primary text-white rounded-3 p-5 text-center">
+    <h2 class="mb-3">Готові зробити замовлення?</h2>
+    <p class="lead mb-4">Приєднуйтесь до тисяч задоволених клієнтів та замовляйте ліки онлайн!</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'pharmacy:catalog' %}" class="btn btn-light btn-lg">
+            <i class="bi bi-grid-3x3-gap-fill"></i> Почати покупки
+        </a>
+        <a href="tel:+380441234567" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-telephone"></i> Зателефонувати
+        </a>
+    </div>
+</section>
+
+<script>
+function addToCart(productId) {
+    const toastHtml = `
+        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Успіх!</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Товар додано до кошика!
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', toastHtml);
+
+    setTimeout(() => {
+        const toast = document.querySelector('.toast:last-child');
+        if (toast) toast.remove();
+    }, 3000);
+
+    updateCartCount(1);
+}
+
+const observerOptions = {
+    threshold: 0.5
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target.querySelector('.stats-counter');
+            const target = parseInt(counter.textContent.replace(/\D/g, ''));
+            animateCounter(counter, target);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.card:has(.stats-counter)').forEach(card => {
+    observer.observe(card);
+});
+
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target + (target === 10 ? 'K+' : '');
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current) + (target >= 1000 ? 'K+' : '');
+        }
+    }, 30);
+}
+</script>
 {% endblock %}
