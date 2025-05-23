@@ -1,50 +1,348 @@
 {% extends 'pharmacy/base.html' %}
 
+{% block extra_css %}
+<style>
+    .category-filter {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .categories-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .category-tag {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.7rem 1.5rem;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        font-weight: 500;
+    }
+
+    .category-tag:hover {
+        background: white;
+        color: #28a745;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .category-tag.active {
+        background: white;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .products-count {
+        color: #6c757d;
+        font-size: 1.1rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        height: 100%;
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .product-image {
+        height: 200px;
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        position: relative;
+    }
+
+    .product-type-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #28a745;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .product-status-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .product-status-badge.in-stock {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .product-status-badge.out-of-stock {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .product-category {
+        color: #28a745;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+    }
+
+    .product-category:hover {
+        text-decoration: underline;
+    }
+
+    .product-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+
+    .product-description {
+        color: #6c757d;
+        margin-bottom: 1rem;
+        flex-grow: 1;
+        line-height: 1.4;
+    }
+
+    .product-price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+
+    .product-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: auto;
+    }
+
+    .btn-detail {
+        flex: 1;
+        padding: 0.7rem;
+        background: transparent;
+        color: #28a745;
+        border: 2px solid #28a745;
+        border-radius: 8px;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-detail:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-cart {
+        flex: 1;
+        padding: 0.7rem;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-cart:hover {
+        background: #1e7e34;
+        transform: translateY(-1px);
+    }
+
+    .btn-cart:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .categories-grid {
+            justify-content: center;
+        }
+
+        .products-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .product-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<!-- Categories Filter -->
-<section class="categories-section">
-    <div class="card">
-        <h3>📂 Категорії товарів</h3>
-        <div class="categories-grid" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
-            {% for category in categories %}
-            <span class="category-tag" style="background: var(--light-color); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--primary-color);">
-                {{ category }}
-            </span>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Products Grid -->
-<section class="products-section">
-    <h2 style="margin-bottom: 2rem;">🛒 Наші товари</h2>
-    <div class="grid">
-        {% for product in products %}
-        <div class="card product-card">
-            <div class="product-status {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
-                {% if product.in_stock %}В наявності{% else %}Немає в наявності{% endif %}
-            </div>
-
-            <h3>{{ product.name }}</h3>
-            <p><strong>Категорія:</strong> {{ product.category }}</p>
-            <p>{{ product.description }}</p>
-            <p class="product-price">{{ product.price }} грн</p>
-
-            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn btn-outline">Детальніше</a>
-                {% if product.in_stock %}
-                <button class="btn btn-primary" onclick="addToCart({{ product.id }})">До кошика</button>
-                {% endif %}
-            </div>
-        </div>
+<section class="category-filter">
+    <h3><i class="bi bi-funnel"></i> Фільтр за категоріями</h3>
+    <div class="categories-grid">
+        <a href="{% url 'pharmacy:catalog' %}" class="category-tag {% if not request.GET.category %}active{% endif %}">
+            <i class="bi bi-grid-3x3-gap"></i> Усі товари
+        </a>
+        {% for category in categories %}
+        <a href="{% url 'pharmacy:catalog' %}?category={{ category.name }}"
+           class="category-tag {% if request.GET.category == category.name %}active{% endif %}">
+            {{ category.name }}
+        </a>
         {% endfor %}
     </div>
 </section>
 
-<script>
+<div class="products-header">
+    <h2 style="color: #2c3e50; margin: 0;">
+        <i class="bi bi-bag"></i>
+        {% if request.GET.category %}
+            {{ request.GET.category }}
+        {% else %}
+            Усі товари
+        {% endif %}
+    </h2>
+    <div class="products-count">
+        <i class="bi bi-info-circle"></i>
+        Знайдено товарів: {{ products|length }}
+    </div>
+</div>
 
+<section class="products-section">
+    {% if products %}
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-type-badge">{{ product.get_product_type_display }}</div>
+                    <div class="product-status-badge {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
+                        {% if product.in_stock %}
+                            <i class="bi bi-check-circle"></i> В наявності
+                        {% else %}
+                            <i class="bi bi-x-circle"></i> Немає
+                        {% endif %}
+                    </div>
+
+                    {% if product.product_type == 'medicine' %}💊
+                    {% elif product.product_type == 'organ' %}🫀
+                    {% elif product.product_type == 'supplement' %}🧪
+                    {% else %}🩺
+                    {% endif %}
+                </div>
+
+                <div class="product-info">
+                    <a href="{% url 'pharmacy:catalog' %}?category={{ product.category.name }}" class="product-category">
+                        {{ product.category }}
+                    </a>
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description|truncatewords:15 }}</p>
+                    <div class="product-price">{{ product.price }} грн</div>
+
+                    <div class="product-actions">
+                        <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn-detail">
+                            <i class="bi bi-eye"></i> Детальніше
+                        </a>
+                        {% if product.in_stock %}
+                        <button class="btn-cart" onclick="addToCart({{ product.id }})">
+                            <i class="bi bi-cart-plus"></i> До кошика
+                        </button>
+                        {% else %}
+                        <button class="btn-cart" disabled>
+                            <i class="bi bi-x-circle"></i> Недоступно
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="bi bi-search"></i>
+        <h3>Товари не знайдені</h3>
+        <p>За вашим запитом товарів не знайдено. Спробуйте обрати іншу категорію.</p>
+        <a href="{% url 'pharmacy:catalog' %}" class="btn btn-primary">
+            <i class="bi bi-arrow-left"></i> Повернутися до всіх товарів
+        </a>
+    </div>
+    {% endif %}
+</section>
+
+<script>
 function addToCart(productId) {
-    alert('Товар додано до кошика!');
+    const toastHtml = `
+        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert" style="z-index: 9999;">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Успіх!</strong>
+                <button type="button" class="btn-close btn-close-white" onclick="this.closest('.toast').remove()"></button>
+            </div>
+            <div class="toast-body">
+                Товар додано до кошика!
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', toastHtml);
+
+    setTimeout(() => {
+        const toast = document.querySelector('.toast:last-child');
+        if (toast) toast.remove();
+    }, 3000);
 }
 </script>
 {% endblock %}

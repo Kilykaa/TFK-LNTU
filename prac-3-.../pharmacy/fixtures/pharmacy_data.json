@@ -1,0 +1,252 @@
+[
+{
+  "model": "pharmacy.category",
+  "pk": 1,
+  "fields": {
+    "name": "Психоделіки",
+    "description": "Клас галюциногенних психоактивних речовин, що у великих дозах можуть викликати психоделічний стан, що супроводжується видіннями.",
+    "is_active": true,
+    "created_at": "2025-05-22T23:18:22.089Z"
+  }
+},
+{
+  "model": "pharmacy.category",
+  "pk": 2,
+  "fields": {
+    "name": "Органи",
+    "description": "Людські органи...",
+    "is_active": true,
+    "created_at": "2025-05-22T23:19:27.105Z"
+  }
+},
+{
+  "model": "pharmacy.category",
+  "pk": 3,
+  "fields": {
+    "name": "Стабілізатори",
+    "description": "Це клас препаратів, які використовують для регулювання коливань настрою та контролю емоційного стану. Вони допомагають зменшити симптоми маніакальних та гіпоманіакальних епізодів, а також знижують ризик повторних епізодів у біполярних розладах.",
+    "is_active": true,
+    "created_at": "2025-05-22T23:22:02.536Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 1,
+  "fields": {
+    "name": "Серце",
+    "category": 2,
+    "description": "М'язовий орган, що перекачує кров по всьому організму через судинну систему",
+    "price": "90000.00",
+    "manufacturer": "Студенти",
+    "country": "IN",
+    "product_type": "organ",
+    "stock_status": "pre_order",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:33:06.814Z",
+    "updated_at": "2025-05-22T23:33:06.814Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 2,
+  "fields": {
+    "name": "Печінка",
+    "category": 2,
+    "description": "Найбільша залоза організму, виконує понад 300 функцій, включно з детоксикацією",
+    "price": "50000.00",
+    "manufacturer": "Студенти",
+    "country": "IN",
+    "product_type": "organ",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:33:40.543Z",
+    "updated_at": "2025-05-22T23:33:40.543Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 3,
+  "fields": {
+    "name": "Легені",
+    "category": 2,
+    "description": "Парний орган дихальної системи, забезпечує газообмін між кров'ю та повітрям",
+    "price": "80000.00",
+    "manufacturer": "Студенти",
+    "country": "IN",
+    "product_type": "organ",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:34:26.559Z",
+    "updated_at": "2025-05-22T23:34:26.559Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 4,
+  "fields": {
+    "name": "Нирки",
+    "category": 2,
+    "description": "Парний орган видільної системи, фільтрує кров та утворює сечу",
+    "price": "50000.00",
+    "manufacturer": "Студенти",
+    "country": "IN",
+    "product_type": "organ",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:34:55.315Z",
+    "updated_at": "2025-05-22T23:34:55.315Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 5,
+  "fields": {
+    "name": "Літій карбонат",
+    "category": 3,
+    "description": "Препарат першої лінії для лікування біполярного розладу",
+    "price": "150.00",
+    "manufacturer": "Krutoblin ©",
+    "country": "UA",
+    "product_type": "medicine",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "5 упаковок",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:36:20.777Z",
+    "updated_at": "2025-05-22T23:36:20.777Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 6,
+  "fields": {
+    "name": "Вальпроєва кислота",
+    "category": 3,
+    "description": "Протиепілептичний засіб, також використовується як стабілізатор настрою",
+    "price": "200.00",
+    "manufacturer": "Krutoblin ©",
+    "country": "UA",
+    "product_type": "medicine",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:37:00.264Z",
+    "updated_at": "2025-05-22T23:37:00.264Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 7,
+  "fields": {
+    "name": "Ламотриджин",
+    "category": 3,
+    "description": "Протиепілептичний препарат з стабілізуючою дією на настрій",
+    "price": "300.00",
+    "manufacturer": "Krutoblin ©",
+    "country": "UA",
+    "product_type": "medicine",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:37:37.060Z",
+    "updated_at": "2025-05-22T23:37:37.060Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 8,
+  "fields": {
+    "name": "Карбамазепін",
+    "category": 3,
+    "description": "Протиепілептичний засіб з стабілізуючим впливом на настрій",
+    "price": "120.00",
+    "manufacturer": "Krutoblin ©",
+    "country": "UA",
+    "product_type": "medicine",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "2 упаковки",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:38:08.028Z",
+    "updated_at": "2025-05-22T23:38:08.028Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 9,
+  "fields": {
+    "name": "ЛСД",
+    "category": 1,
+    "description": "напівсинтетична психоактивна речовина із сімейства лізергамідів﻿[в інших мовах]. ЛСД синтезується з лізергінової кислоти, що міститься в маткових ріжках гриба роду Claviceps, що паразитує на деяких злакових рослинах. ЛСД є одним із найсильніших відомих галюциногенів і належить до підгрупи психоделіків, які діють на серотонінову систему організму.",
+    "price": "500.00",
+    "manufacturer": "NeKrutoblin ©",
+    "country": "UA",
+    "product_type": "medical_device",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:43:01.341Z",
+    "updated_at": "2025-05-22T23:43:01.341Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 10,
+  "fields": {
+    "name": "Альфа-метилтриптамін",
+    "category": 1,
+    "description": "психоделічний, стимулюючий та емпатогенний препарат, який є похідним триптаміну. Початково препарат був розроблений компанією «Upjohn» у 1960-х роках як антидепресант, і недовго використовувався як антидепресант у Радянському Союзі під торговою маркою «Індопан», перш ніж він був знатий з виробництва.",
+    "price": "1200.00",
+    "manufacturer": "NeKrutoblin ©",
+    "country": "UA",
+    "product_type": "medical_device",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:45:04.312Z",
+    "updated_at": "2025-05-22T23:45:04.312Z"
+  }
+},
+{
+  "model": "pharmacy.product",
+  "pk": 11,
+  "fields": {
+    "name": "Псилоцибін",
+    "category": 1,
+    "description": "Алкалоїд, фосфорний ефір похідного триптаміну (C12H17N2O4P). В природі зустрічається у деяких грибах роду Psilocybe, Panaeolus, Stropharia, Gymnopilus, Іноцибе та інших, в деяких країнах речовину синтезують з метою медичного та психотерапевтичного використання.",
+    "price": "700.00",
+    "manufacturer": "NeKrutoblin ©",
+    "country": "UA",
+    "product_type": "medical_device",
+    "stock_status": "in_stock",
+    "dosage": "Не вказано",
+    "package": "1 упаковка",
+    "rating": 5,
+    "is_prescription_required": false,
+    "created_at": "2025-05-22T23:45:52.352Z",
+    "updated_at": "2025-05-22T23:45:52.352Z"
+  }
+}
+]

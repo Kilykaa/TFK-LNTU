@@ -1,65 +1,382 @@
 {% extends 'pharmacy/base.html' %}
 
+{% block extra_css %}
+<style>
+    .product-detail-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+    .product-image-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-image-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 30% 50%, rgba(40, 167, 69, 0.1), transparent 50%),
+                    radial-gradient(circle at 70% 20%, rgba(32, 201, 151, 0.1), transparent 50%);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #28a745;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .product-info {
+        padding: 2rem;
+    }
+
+    .product-title {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .product-price {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+
+    .product-meta {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .meta-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .meta-item:last-child {
+        border-bottom: none;
+    }
+
+    .meta-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    .meta-value {
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .stock-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+
+    .stock-status.in-stock {
+        background: #d4edda;
+        color: #155724;
+        border: 2px solid #c3e6cb;
+    }
+
+    .stock-status.out-of-stock {
+        background: #f8d7da;
+        color: #721c24;
+        border: 2px solid #f5c6cb;
+    }
+
+    .product-description {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .buy-section {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .btn-buy-now {
+        background: white;
+        color: #28a745;
+        border: none;
+        padding: 1rem 3rem;
+        font-size: 1.3rem;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-buy-now:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        color: #1e7e34;
+    }
+
+    .btn-add-cart {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+        padding: 0.8rem 2rem;
+        font-weight: bold;
+        border-radius: 50px;
+        margin-left: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-add-cart:hover {
+        background: white;
+        color: #28a745;
+    }
+
+    .rating-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stars {
+        display: flex;
+        gap: 0.2rem;
+    }
+
+    .star {
+        color: #ffc107;
+        font-size: 1.2rem;
+    }
+
+    .category-link {
+        color: #28a745;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .category-link:hover {
+        color: #1e7e34;
+        text-decoration: underline;
+    }
+
+    .back-to-catalog {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        padding: 1rem 2rem;
+        border: 2px solid #dee2e6;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+
+    .back-to-catalog:hover {
+        color: #28a745;
+        border-color: #28a745;
+        transform: translateX(-5px);
+    }
+
+    @media (max-width: 768px) {
+        .product-detail-container {
+            margin: 0 -20px;
+            border-radius: 0;
+        }
+
+        .product-title {
+            font-size: 2rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+        }
+
+        .btn-add-cart {
+            margin-left: 0;
+            margin-top: 1rem;
+            display: block;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<!-- Product Details -->
-<section class="product-details">
-    <div class="card">
-        <div class="product-info" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
-            <div class="product-image-placeholder" style="background: var(--light-color); height: 300px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
-                💊
+<div class="product-detail-container">
+    <div class="row g-0">
+        <div class="col-lg-6">
+            <div class="product-image-section">
+                <div class="product-badge">{{ product.get_product_type_display }}</div>
+                <div style="position: relative; z-index: 2;">
+                    {% if product.product_type == 'medicine' %}💊
+                    {% elif product.product_type == 'organ' %}🫀
+                    {% elif product.product_type == 'supplement' %}🧪
+                    {% else %}🩺
+                    {% endif %}
+                </div>
             </div>
+        </div>
 
-            <div class="product-details-content">
-                <h1 style="color: var(--primary-color); margin-bottom: 1rem;">{{ product.name }}</h1>
+        <div class="col-lg-6">
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }}</h1>
 
-                <div class="product-meta" style="margin-bottom: 2rem;">
-                    <p><strong>Категорія:</strong> {{ product.category }}</p>
-                    <p><strong>Виробник:</strong> {{ product.manufacturer }}</p>
-                    <p><strong>Країна:</strong> {{ product.country }}</p>
-                    <p><strong>Дозування:</strong> {{ product.dosage }}</p>
-                    <p><strong>Упаковка:</strong> {{ product.package }}</p>
-                </div>
-
-                <div class="product-description" style="margin-bottom: 2rem;">
-                    <h3>Опис товару</h3>
-                    <p>{{ product.description }}</p>
-                </div>
-
-                <div class="product-price-section" style="margin-bottom: 2rem;">
-                    <p class="product-price" style="font-size: 2rem;">{{ product.price }} грн</p>
-                    <div class="product-status {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}" style="position: static; margin-top: 0.5rem;">
-                        {% if product.in_stock %}✅ В наявності{% else %}❌ Немає в наявності{% endif %}
+                <div class="rating-section">
+                    <div class="stars">
+                        {% for i in "12345"|make_list %}
+                            {% if forloop.counter <= product.rating %}
+                                <span class="star">★</span>
+                            {% else %}
+                                <span class="star" style="color: #dee2e6;">★</span>
+                            {% endif %}
+                        {% endfor %}
                     </div>
+                    <span class="text-muted">({{ product.rating }}/5)</span>
                 </div>
 
-                <div class="product-actions">
+                <div class="product-price">{{ product.price }} грн</div>
+
+                <div class="stock-status {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
                     {% if product.in_stock %}
-                    <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;" onclick="buyNow({{ product.id }})">
-                        🛒 Купити зараз
-                    </button>
-                    <button class="btn btn-outline" onclick="addToCart({{ product.id }})">Додати до кошика</button>
+                        <i class="bi bi-check-circle-fill"></i>
+                        В наявності
                     {% else %}
-                    <button class="btn" style="background: var(--light-color); color: var(--dark-color);" disabled>
-                        Товар відсутній
-                    </button>
+                        <i class="bi bi-x-circle-fill"></i>
+                        Немає в наявності
+                    {% endif %}
+                </div>
+
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Категорія:</span>
+                        <a href="{% url 'pharmacy:catalog' %}?category={{ product.category.name }}" class="category-link">{{ product.category }}</a>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Виробник:</span>
+                        <span class="meta-value">{{ product.manufacturer }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Країна:</span>
+                        <span class="meta-value">{{ product.get_country_display }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Дозування:</span>
+                        <span class="meta-value">{{ product.dosage }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Упаковка:</span>
+                        <span class="meta-value">{{ product.package }}</span>
+                    </div>
+                    {% if product.is_prescription_required %}
+                    <div class="meta-item">
+                        <span class="meta-label">Рецепт:</span>
+                        <span class="meta-value text-warning">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            Потрібен рецепт
+                        </span>
+                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<div style="text-align: center; margin-top: 2rem;">
-    <a href="{% url 'pharmacy:catalog' %}" class="btn btn-outline">← Повернутися до каталогу</a>
+<div class="product-description">
+    <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+        <i class="bi bi-info-circle"></i> Опис товару
+    </h3>
+    <p>{{ product.description }}</p>
+</div>
+
+{% if product.in_stock %}
+<div class="buy-section">
+    <h3 style="margin-bottom: 1rem;">Готові купити?</h3>
+    <p style="margin-bottom: 2rem; opacity: 0.9;">Натисніть кнопку нижче для оформлення замовлення</p>
+    <button class="btn-buy-now" onclick="buyNow({{ product.id }})">
+        <i class="bi bi-cart-check-fill"></i> Купити зараз
+    </button>
+    <button class="btn-add-cart" onclick="addToCart({{ product.id }})">
+        <i class="bi bi-cart-plus"></i> Додати до кошика
+    </button>
+</div>
+{% else %}
+<div class="alert alert-danger text-center">
+    <h4><i class="bi bi-exclamation-triangle"></i> Товар тимчасово відсутній</h4>
+    <p>Зв'яжіться з нами для уточнення термінів поставки</p>
+    <a href="tel:+380441234567" class="btn btn-outline-danger">
+        <i class="bi bi-telephone"></i> Зателефонувати
+    </a>
+</div>
+{% endif %}
+
+<div class="text-center" style="margin-top: 3rem;">
+    <a href="{% url 'pharmacy:catalog' %}" class="back-to-catalog">
+        <i class="bi bi-arrow-left"></i>
+        Повернутися до каталогу
+    </a>
 </div>
 
 <script>
 function buyNow(productId) {
-    alert('Перехід до оформлення замовлення!');
+    alert('Функція купівлі буде реалізована в наступних лабораторних роботах!');
 }
 
 function addToCart(productId) {
-    alert('Товар додано до кошика!');
+    const toastHtml = `
+        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Додано до кошика!</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Товар успішно додано до вашого кошика
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', toastHtml);
+
+    setTimeout(() => {
+        const toast = document.querySelector('.toast:last-child');
+        if (toast) toast.remove();
+    }, 3000);
 }
 </script>
 {% endblock %}
