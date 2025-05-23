@@ -1,0 +1,333 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .checkout-header {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .checkout-form {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .required-field::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .order-summary {
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 15px;
+        padding: 2rem;
+    }
+
+    .summary-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 1rem;
+    }
+
+    .summary-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .item-details h6 {
+        color: #2c3e50;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+
+    .item-details small {
+        color: #6c757d;
+    }
+
+    .item-price {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .total-section {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .total-amount {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .place-order-btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 1rem 3rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .place-order-btn:hover {
+        background: #1e7e34;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .back-to-cart {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6c757d;
+        text-decoration: none;
+        padding: 0.8rem 2rem;
+        border: 2px solid #dee2e6;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+    .back-to-cart:hover {
+        color: #28a745;
+        border-color: #28a745;
+        transform: translateX(-5px);
+        text-decoration: none;
+    }
+
+    .required-notice {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            padding: 1rem 0.5rem;
+        }
+
+        .checkout-form, .order-summary {
+            padding: 1.5rem;
+        }
+
+        .summary-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h1><i class="bi bi-credit-card"></i> Оформлення замовлення</h1>
+        <p>Заповніть форму для завершення покупки</p>
+    </div>
+
+    <a href="{% url 'pharmacy:cart' %}" class="back-to-cart">
+        <i class="bi bi-arrow-left"></i>
+        Повернутися до кошика
+    </a>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form method="post" action="{% url 'pharmacy:place_order' %}" class="checkout-form">
+                {% csrf_token %}
+
+                <div class="required-notice">
+                    <i class="bi bi-info-circle"></i>
+                    Поля позначені зірочкою (*) є обов'язковими для заповнення
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-person"></i>
+                        Контактна інформація
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label required-field">Повне ім'я</label>
+                                <input type="text" name="customer_name" class="form-control"
+                                       placeholder="Введіть ваше повне ім'я" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label required-field">Номер телефону</label>
+                                <input type="tel" name="customer_phone" class="form-control"
+                                       placeholder="+380 XX XXX XX XX" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email (необов'язково)</label>
+                        <input type="email" name="customer_email" class="form-control"
+                               placeholder="example@email.com">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-geo-alt"></i>
+                        Адреса доставки
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label required-field">Повна адреса</label>
+                        <textarea name="delivery_address" class="form-control" rows="3"
+                                  placeholder="Введіть повну адресу доставки (місто, вулиця, будинок, квартира)" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="bi bi-chat-text"></i>
+                        Додаткова інформація
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Примітки до замовлення</label>
+                        <textarea name="notes" class="form-control" rows="3"
+                                  placeholder="Додаткові побажання або коментарі до замовлення"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="place-order-btn">
+                    <i class="bi bi-check-circle"></i>
+                    Підтвердити замовлення
+                </button>
+            </form>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="order-summary">
+                <h3 class="summary-title">
+                    <i class="bi bi-receipt"></i>
+                    Ваше замовлення
+                </h3>
+
+                {% for item in cart_items %}
+                <div class="summary-item">
+                    <div class="item-details">
+                        <h6>{{ item.product.name }}</h6>
+                        <small>{{ item.quantity }} шт. × {{ item.product.price }} грн</small>
+                    </div>
+                    <div class="item-price">{{ item.total }} грн</div>
+                </div>
+                {% endfor %}
+
+                <div class="total-section">
+                    <div class="total-amount">{{ total_price }} грн</div>
+                    <div>Загальна сума</div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #dee2e6;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: #28a745; font-weight: bold;">
+                        <i class="bi bi-truck"></i>
+                        Безкоштовна доставка
+                    </div>
+                    <small style="color: #6c757d; display: block; margin-top: 0.5rem;">
+                        Доставка здійснюється протягом 1-2 робочих днів
+                    </small>
+                </div>
+
+                <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e8; border-radius: 8px; font-size: 0.9rem;">
+                    <i class="bi bi-shield-check" style="color: #28a745;"></i>
+                    <strong>Гарантія якості</strong><br>
+                    <small>Всі товари сертифіковані та мають гарантію якості</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

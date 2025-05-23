@@ -268,8 +268,8 @@
             <div class="product-card">
                 <div class="product-image">
                     <div class="product-type-badge">{{ product.get_product_type_display }}</div>
-                    <div class="product-status-badge {% if product.in_stock %}in-stock{% else %}out-of-stock{% endif %}">
-                        {% if product.in_stock %}
+                    <div class="product-status-badge {% if product.stock_status == 'in_stock' %}in-stock{% else %}out-of-stock{% endif %}">
+                        {% if product.stock_status == 'in_stock' %}
                             <i class="bi bi-check-circle"></i> В наявності
                         {% else %}
                             <i class="bi bi-x-circle"></i> Немає
@@ -295,7 +295,7 @@
                         <a href="{% url 'pharmacy:product_detail' product.id %}" class="btn-detail">
                             <i class="bi bi-eye"></i> Детальніше
                         </a>
-                        {% if product.in_stock %}
+                        {% if product.stock_status == 'in_stock' %}
                         <button class="btn-cart" onclick="addToCart({{ product.id }})">
                             <i class="bi bi-cart-plus"></i> До кошика
                         </button>
@@ -323,16 +323,51 @@
 </section>
 
 <script>
-function addToCart(productId) {
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value ||
+           document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
+async function addToCart(productId) {
+    try {
+        const response = await fetch('{% url "pharmacy:add_to_cart" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: 1
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Успіх!', 'Товар додано до кошика!', 'success');
+            updateCartCount(data.cart_count);
+        } else {
+            showToast('Помилка!', data.message || 'Не вдалося додати товар до кошика', 'error');
+        }
+    } catch (error) {
+        showToast('Помилка!', 'Сталася помилка при додаванні товару до кошика', 'error');
+    }
+}
+
+function showToast(title, message, type = 'success') {
+    const bgClass = type === 'success' ? 'bg-success' : 'bg-danger';
+    const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-x-circle-fill';
+
     const toastHtml = `
         <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert" style="z-index: 9999;">
-            <div class="toast-header bg-success text-white">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong class="me-auto">Успіх!</strong>
+            <div class="toast-header ${bgClass} text-white">
+                <i class="${icon} me-2"></i>
+                <strong class="me-auto">${title}</strong>
                 <button type="button" class="btn-close btn-close-white" onclick="this.closest('.toast').remove()"></button>
             </div>
             <div class="toast-body">
-                Товар додано до кошика!
+                ${message}
             </div>
         </div>
     `;
@@ -344,5 +379,25 @@ function addToCart(productId) {
         if (toast) toast.remove();
     }, 3000);
 }
+
+function updateCartCount(count) {
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(element => {
+        element.textContent = count;
+        if (count > 0) {
+            element.style.display = 'inline';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.querySelector('[name=csrfmiddlewaretoken]') && !document.querySelector('meta[name="csrf-token"]')) {
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = '{{ csrf_token }}';
+        document.body.appendChild(csrfInput);
+    }
+});
 </script>
 {% endblock %}

@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6b6fed8-a8c6-4d9f-8c03-b06f1866b311" name="Changes" comment="ADD: 1 practical complete">
+      <change afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/checkout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/order_success.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/cart.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/catalog.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/catalog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/product_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/templates/pharmacy/product_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prac-3-.../pharmacy/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prac-3-.../pharmacy/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

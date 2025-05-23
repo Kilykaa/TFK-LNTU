@@ -31,12 +31,18 @@
         font-size: 3rem;
         margin-bottom: 1rem;
         display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-icon:hover {
+        transform: scale(1.2) rotate(10deg);
     }
 
     .stats-counter {
         font-size: 2.5rem;
         font-weight: bold;
         color: #28a745;
+        transition: all 0.5s ease-out;
     }
 
     .product-image-placeholder {
@@ -49,11 +55,30 @@
         justify-content: center;
         font-size: 4rem;
         margin-bottom: 1rem;
-        transition: transform 0.3s ease;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
 
     .product-image-placeholder:hover {
         transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .product-image-placeholder::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.8), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-image-placeholder:hover::after {
+        opacity: 1;
     }
 
     .testimonial-card {
@@ -61,6 +86,66 @@
         border-left: 4px solid #28a745;
         padding: 1.5rem;
         margin: 1rem 0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-add-cart {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-add-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-add-cart:active {
+        transform: translateY(0);
+    }
+
+    .btn-add-cart::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%, -50%);
+        transform-origin: 50% 50%;
+    }
+
+    .btn-add-cart:focus:not(:active)::after {
+        animation: ripple 0.6s ease-out;
+    }
+
+    @keyframes ripple {
+        0% {
+            transform: scale(0, 0);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(20, 20);
+            opacity: 0;
+        }
+    }
+
+    .counter-animate {
+        animation: pulse 0.5s ease;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
     }
 </style>
 {% endblock %}
@@ -105,7 +190,7 @@
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <i class="bi bi-calendar-check feature-icon text-primary"></i>
-                    <div class="stats-counter">42</div>
+                    <div class="stats-counter" data-target="42">0</div>
                     <h5>Років досвіду</h5>
                 </div>
             </div>
@@ -114,7 +199,7 @@
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <i class="bi bi-geo-alt feature-icon text-success"></i>
-                    <div class="stats-counter">5</div>
+                    <div class="stats-counter" data-target="5">0</div>
                     <h5>Локацій</h5>
                 </div>
             </div>
@@ -123,7 +208,7 @@
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
                     <i class="bi bi-people feature-icon text-warning"></i>
-                    <div class="stats-counter">10K+</div>
+                    <div class="stats-counter" data-target="10000">0</div>
                     <h5>Задоволених клієнтів</h5>
                 </div>
             </div>
@@ -195,7 +280,7 @@
                             <i class="bi bi-eye"></i> Детальніше
                         </a>
                         {% if product.in_stock %}
-                        <button class="btn btn-success" onclick="addToCart({{ product.id }})">
+                        <button class="btn btn-success btn-add-cart" onclick="addToCart({{ product.id }}, this)">
                             <i class="bi bi-cart-plus"></i> До кошика
                         </button>
                         {% endif %}
@@ -324,60 +409,105 @@
 </section>
 
 <script>
-function addToCart(productId) {
-    const toastHtml = `
-        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert">
-            <div class="toast-header bg-success text-white">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong class="me-auto">Успіх!</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">
-                Товар додано до кошика!
-            </div>
+function addToCart(productId, button) {
+    fetch('{% url "pharmacy:add_to_cart" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Товар додано до кошика!');
+            updateCartCount(data.cart_count);
+
+            if (button) {
+                button.classList.add('counter-animate');
+                setTimeout(() => {
+                    button.classList.remove('counter-animate');
+                }, 500);
+            }
+        } else {
+            showToast(data.message || 'Помилка при додаванні товару', 'error');
+        }
+    })
+    .catch(error => {
+        showToast('Сталася помилка', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast show position-fixed bottom-0 end-0 m-3 bg-${type === 'error' ? 'danger' : 'success'} text-white`;
+    toast.style.zIndex = '9999';
+    toast.style.borderRadius = '8px';
+    toast.style.overflow = 'hidden';
+    toast.style.transition = 'all 0.3s ease';
+
+    toast.innerHTML = `
+        <div class="toast-body d-flex align-items-center">
+            <i class="bi ${type === 'error' ? 'bi-x-circle-fill' : 'bi-check-circle-fill'} me-2"></i>
+            <span>${message}</span>
+            <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.closest('.toast').remove()"></button>
         </div>
     `;
 
-    document.body.insertAdjacentHTML('beforeend', toastHtml);
+    document.body.appendChild(toast);
 
     setTimeout(() => {
-        const toast = document.querySelector('.toast:last-child');
-        if (toast) toast.remove();
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
     }, 3000);
-
-    updateCartCount(1);
 }
 
-const observerOptions = {
-    threshold: 0.5
-};
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const counter = entry.target.querySelector('.stats-counter');
-            const target = parseInt(counter.textContent.replace(/\D/g, ''));
-            animateCounter(counter, target);
+function updateCartCount(count) {
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(element => {
+        element.textContent = count;
+        element.style.display = count > 0 ? 'inline' : 'none';
+        element.classList.add('counter-animate');
+        setTimeout(() => element.classList.remove('counter-animate'), 500);
+    });
+}
+
+function animateCounters() {
+    const counters = document.querySelectorAll('.stats-counter[data-target]');
+    const speed = 2500;
+
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / speed;
+
+        if (count < target) {
+            counter.innerText = Math.ceil(count + increment);
+            setTimeout(animateCounters, 0.05);
+        } else {
+            counter.innerText = target === 10000 ? '10K+' : target;
         }
     });
-}, observerOptions);
-
-document.querySelectorAll('.card:has(.stats-counter)').forEach(card => {
-    observer.observe(card);
-});
-
-function animateCounter(element, target) {
-    let current = 0;
-    const increment = target / 50;
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target + (target === 10 ? 'K+' : '');
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current) + (target >= 1000 ? 'K+' : '');
-        }
-    }, 30);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.01 });
+
+    document.querySelectorAll('.card:has(.stats-counter)').forEach(card => {
+        observer.observe(card);
+    });
+});
 </script>
 {% endblock %}

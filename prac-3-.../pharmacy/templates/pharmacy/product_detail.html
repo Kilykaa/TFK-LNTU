@@ -132,24 +132,6 @@
         margin-bottom: 2rem;
     }
 
-    .btn-buy-now {
-        background: white;
-        color: #28a745;
-        border: none;
-        padding: 1rem 3rem;
-        font-size: 1.3rem;
-        font-weight: bold;
-        border-radius: 50px;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .btn-buy-now:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        color: #1e7e34;
-    }
-
     .btn-add-cart {
         background: transparent;
         color: white;
@@ -157,13 +139,19 @@
         padding: 0.8rem 2rem;
         font-weight: bold;
         border-radius: 50px;
-        margin-left: 1rem;
         transition: all 0.3s ease;
     }
 
     .btn-add-cart:hover {
         background: white;
         color: #28a745;
+    }
+
+    .btn-add-cart:disabled {
+        background: #6c757d;
+        border-color: #6c757d;
+        cursor: not-allowed;
+        transform: none;
     }
 
     .rating-section {
@@ -225,12 +213,6 @@
 
         .product-price {
             font-size: 2rem;
-        }
-
-        .btn-add-cart {
-            margin-left: 0;
-            margin-top: 1rem;
-            display: block;
         }
     }
 </style>
@@ -326,11 +308,6 @@
 
 {% if product.in_stock %}
 <div class="buy-section">
-    <h3 style="margin-bottom: 1rem;">Готові купити?</h3>
-    <p style="margin-bottom: 2rem; opacity: 0.9;">Натисніть кнопку нижче для оформлення замовлення</p>
-    <button class="btn-buy-now" onclick="buyNow({{ product.id }})">
-        <i class="bi bi-cart-check-fill"></i> Купити зараз
-    </button>
     <button class="btn-add-cart" onclick="addToCart({{ product.id }})">
         <i class="bi bi-cart-plus"></i> Додати до кошика
     </button>
@@ -353,20 +330,68 @@
 </div>
 
 <script>
-function buyNow(productId) {
-    alert('Функція купівлі буде реалізована в наступних лабораторних роботах!');
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value ||
+           document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 }
 
-function addToCart(productId) {
+async function addToCart(productId) {
+    try {
+        const response = await fetch('{% url "pharmacy:add_to_cart" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: 1
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Успіх!', 'Товар додано до кошика!', 'success');
+            updateCartCount(data.cart_count);
+        } else {
+            showToast('Помилка!', data.message || 'Не вдалося додати товар до кошика', 'error');
+        }
+    } catch (error) {
+        showToast('Помилка!', 'Сталася помилка при додаванні товару до кошика', 'error');
+    }
+}
+
+function showToast(title, message, type = 'success') {
+    let bgClass, icon;
+
+    switch(type) {
+        case 'success':
+            bgClass = 'bg-success';
+            icon = 'bi-check-circle-fill';
+            break;
+        case 'error':
+            bgClass = 'bg-danger';
+            icon = 'bi-x-circle-fill';
+            break;
+        case 'info':
+            bgClass = 'bg-info';
+            icon = 'bi-info-circle-fill';
+            break;
+        default:
+            bgClass = 'bg-success';
+            icon = 'bi-check-circle-fill';
+    }
+
     const toastHtml = `
-        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert">
-            <div class="toast-header bg-success text-white">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong class="me-auto">Додано до кошика!</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+        <div class="toast show position-fixed bottom-0 end-0 m-3" role="alert" style="z-index: 9999;">
+            <div class="toast-header ${bgClass} text-white">
+                <i class="${icon} me-2"></i>
+                <strong class="me-auto">${title}</strong>
+                <button type="button" class="btn-close btn-close-white" onclick="this.closest('.toast').remove()"></button>
             </div>
             <div class="toast-body">
-                Товар успішно додано до вашого кошика
+                ${message}
             </div>
         </div>
     `;
@@ -378,5 +403,25 @@ function addToCart(productId) {
         if (toast) toast.remove();
     }, 3000);
 }
+
+function updateCartCount(count) {
+    const cartCountElements = document.querySelectorAll('.cart-count');
+    cartCountElements.forEach(element => {
+        element.textContent = count;
+        if (count > 0) {
+            element.style.display = 'inline';
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.querySelector('[name=csrfmiddlewaretoken]') && !document.querySelector('meta[name="csrf-token"]')) {
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = '{{ csrf_token }}';
+        document.body.appendChild(csrfInput);
+    }
+});
 </script>
 {% endblock %}

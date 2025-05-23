@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -31,7 +27,7 @@
                         <ul class="navbar-nav nav-list">
                             <li class="nav-item"><a href="{% url 'pharmacy:home' %}" class="nav-link"><i class="bi bi-house-fill"></i> Головна</a></li>
                             <li class="nav-item"><a href="{% url 'pharmacy:catalog' %}" class="nav-link"><i class="bi bi-grid-3x3-gap-fill"></i> Каталог</a></li>
-                            <li class="nav-item"><a href="{% url 'pharmacy:cart' %}" class="nav-link"><i class="bi bi-cart-fill"></i> Кошик <span class="cart-count badge bg-danger">(0)</span></a></li>
+                            <li class="nav-item"><a href="{% url 'pharmacy:cart' %}" class="nav-link"><i class="bi bi-cart-fill"></i> Кошик</a></li>
                             <li class="nav-item"><a href="{% url 'pharmacy:about' %}" class="nav-link"><i class="bi bi-info-circle-fill"></i> Про нас</a></li>
                         </ul>
                     </div>
@@ -40,7 +36,6 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="container">
             {% block page_header %}
@@ -67,37 +62,39 @@
     </main>
 
     <footer class="footer">
-    <div class="container">
-        <div class="row footer-content">
-            <div class="col-md-4 footer-section">
-                <h5>Контакти</h5>
-                <p>вул. KrutoBlin, 15, м. ЛуцькBlin</p>
-                <p>+380 44 123-45-67</p>
-                <p>info@daniil-blin.ua</p>
-            </div>
+        <div class="container">
+            <div class="row footer-content">
+                <div class="col-md-4 footer-section">
+                    <h5>Контакти</h5>
+                    <p>вул. KrutoBlin, 15, м. ЛуцькBlin</p>
+                    <p>+380 44 123-45-67</p>
+                    <p>info@daniil-blin.ua</p>
+                </div>
 
-            <div class="col-md-4 footer-section">
-                <h5>Режим роботи</h5>
-                <p>Пн-Пт: 8:00-22:00</p>
-                <p>Сб-Нд: 9:00-21:00</p>
-                <p class="emergency">Екстрена допомога: цілодобово</p>
-            </div>
+                <div class="col-md-4 footer-section">
+                    <h5>Режим роботи</h5>
+                    <p>Пн-Пт: 8:00-22:00</p>
+                    <p>Сб-Нд: 9:00-21:00</p>
+                    <p class="emergency">Екстрена допомога: цілодобово</p>
+                </div>
 
-            <div class="col-md-4 footer-section">
-                <h5>Слідкуйте за нами</h5>
-                <div class="social-links">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-telegram"></i></a>
+                <div class="col-md-4 footer-section">
+                    <h5>Слідкуйте за нами</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-telegram"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="footer-bottom">
-            <p>&copy; 2025 Аптека Blin. Турбуємося про ваше здоров'я</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Аптека Blin. Турбуємося про ваше здоров'я</p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
